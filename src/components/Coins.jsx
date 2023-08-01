@@ -1,30 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { server } from "../index";
-import {
-  Container,
-  HStack,
-  VStack,
-  Image,
-  Heading,
-  Text,
-  Button,
-  RadioGroup,
-  Radio,
-} from "@chakra-ui/react";
+import { Button, Container, HStack, Radio, RadioGroup } from "@chakra-ui/react";
 import Loader from "./Loader";
-import ErrorComponents from "./ErrorComponents";
+import ErrorComponent from "./ErrorComponents";
 import CoinCard from "./CoinCard";
 
 const Coins = () => {
   const [coins, setCoins] = useState([]);
-
-  const [error, setError] = useState(false);
-
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
-
   const [currency, setCurrency] = useState("inr");
 
   const currencySymbol =
@@ -53,7 +39,7 @@ const Coins = () => {
     fetchCoins();
   }, [currency, page]);
 
-  if (error) return <ErrorComponents message={"Error While Fetching Coins"} />;
+  if (error) return <ErrorComponent message={"Error While Fetching Coins"} />;
 
   return (
     <Container maxW={"container.xl"}>
@@ -63,9 +49,9 @@ const Coins = () => {
         <>
           <RadioGroup value={currency} onChange={setCurrency} p={"8"}>
             <HStack spacing={"4"}>
-              <Radio value={"inr"}>"INR"</Radio>
-              <Radio value={"usd"}>"USD"</Radio>
-              <Radio value={"eur"}>"EUR"</Radio>
+              <Radio value={"inr"}>INR</Radio>
+              <Radio value={"usd"}>USD</Radio>
+              <Radio value={"eur"}>EUR</Radio>
             </HStack>
           </RadioGroup>
 
@@ -73,18 +59,17 @@ const Coins = () => {
             {coins.map((i) => (
               <CoinCard
                 id={i.id}
+                key={i.id}
                 name={i.name}
                 price={i.current_price}
                 img={i.image}
                 symbol={i.symbol}
-                url={i.url}
-                key={i.id}
                 currencySymbol={currencySymbol}
               />
             ))}
           </HStack>
 
-          <HStack w={"full"} overflowX={"auto"} m={"auto"} p={"8"}>
+          <HStack w={"full"} overflowX={"auto"} p={"8"}>
             {btns.map((item, index) => (
               <Button
                 key={index}
